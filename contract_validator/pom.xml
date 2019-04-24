@@ -8,5 +8,31 @@
     <artifactId>contract_validator</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+    <dependencies>
+        <!--<dependency>-->
+        <!--<groupId>org.ethereum</groupId>-->
+        <!--<artifactId>ethereumj-core</artifactId>-->
+        <!--<version>1.12.0-RELEASE</version>-->
+        <!--<type>pom</type>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.fusesource.leveldbjni</groupId>
+            <artifactId>leveldbjni-all</artifactId>
+            <version>1.8</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.ethereum</groupId>-->
+            <!--<artifactId>ethereumj-core</artifactId>-->
+            <!--<version>1.12.0-RELEASE</version>-->
+        <!--</dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.ethereum/ethereumj-core -->
+        <!--<dependency>-->
+            <!--<groupId>org.ethereum</groupId>-->
+            <!--<artifactId>ethereumj-core</artifactId>-->
+            <!--<version>1.7.2-RELEASE</version>-->
+        <!--</dependency>-->
+
+    </dependencies>
+
 
 </project>
