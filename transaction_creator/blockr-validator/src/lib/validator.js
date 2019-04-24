@@ -2,6 +2,7 @@ const Database = require('bluckur-database').getInstance(process.env.IS_BACKUP =
 const BlockchainValidator = require('./validators/blockChainValidator');
 const BlockValidator = require('./validators/blockValidator');
 const TransactionValidator = require('./validators/transactionValidator');
+const SmartContractValidator = require('./validators/smartContractValidator');
 const Cron = require('node-cron');
 const CreateBlockTask = require('../tasks/CreateBlockTask');
 const Security = require('./security/security');
@@ -25,6 +26,7 @@ class Validator {
     this.blockchainValidator = BlockchainValidator.getInstance();
     this.blockValidator = BlockValidator.getInstance(Database);
     this.transactionValidator = TransactionValidator.getInstance(Database);
+    this.contractValidator = SmartContractValidator.getInstance();
 
     // Function binds
     this.onBlockchainReply = this.onBlockchainReply.bind(this);
@@ -76,6 +78,12 @@ class Validator {
           const lastBlock = resultBlock[resultBlock.length - 1];
           let lasthash = lastBlock.blockHeader.blockHash;
           if (!lasthash) lasthash = '';
+          
+          // Check if lastblock transaction contained a contract
+          if (this.contractValidator.validate(lastBlock)) {
+            console.log("Block contained a smart contract");
+          }
+
           this.blockTask.createAndSend(resultKeyPair.pubKey, lasthash, TemporaryStorage.getPendingTransactionsAsArray(), lastBlock.blockHeader.blockNumber + 1);
           Database.getGlobalStateAsync().then((globalState) => {
             this.lotteryTask.scheduleTask(lasthash, globalState);
