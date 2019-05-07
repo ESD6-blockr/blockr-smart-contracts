@@ -1,16 +1,17 @@
-package main;
+package main.contracts;
 
 import main.exceptions.ContractException;
 
 import java.util.List;
 import java.util.Map;
 
-public class contract {
+public class ContractTeacherBadges implements Contract {
 
     private String teacher_address;
     private List<String> student_addresses;
 
     private Map<Integer, String> badges;
+
 
     enum FieldState {Active, Finished}
     FieldState state;
@@ -21,7 +22,7 @@ public class contract {
         return teacher_address.equals(sender);
     }
 
-    public contract (String sender, String[] students) {
+    public ContractTeacherBadges(String sender, List<String> students) {
         teacherScore = 0;
         teacher_address = sender;
         student_addresses = students;
@@ -33,20 +34,20 @@ public class contract {
         badges.put(80, "🤩 Absolute legend");
     }
 
-    public void postFeedback(int grade) throws ContractException {
+    public void postFeedback(int grade, String sender) throws ContractException {
         if(grade > 0 && grade <= 10) {
 //            if ()
         } else {
             throw new ContractException("Number must be in 1-10");
         }
 
-        if(student_addresses) throw new ContractException("Number must be in 1-10");
+        if(!student_addresses.contains(sender)) throw new ContractException("Only students can post feedback");
         if(!(grade > 0 && grade <= 10)) throw new ContractException("Number must be in 1-10");
         if(state == FieldState.Finished) throw new ContractException("Field has ended");
     }
 
     public String[] getBadges() {
-
+        return null;
     }
 
     public void endField() {
@@ -61,7 +62,7 @@ public class contract {
     //*
     // pragma solidity ^0.4.23;
     //
-    //contract FieldTeacherBadges {
+    //Contract FieldTeacherBadges {
     //    address teacher;
     //    address[] students;
     //
