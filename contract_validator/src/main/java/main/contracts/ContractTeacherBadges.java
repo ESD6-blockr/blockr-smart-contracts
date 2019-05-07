@@ -2,6 +2,7 @@ package main.contracts;
 
 import main.exceptions.ContractException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -35,84 +36,26 @@ public class ContractTeacherBadges implements Contract {
     }
 
     public void postFeedback(int grade, String sender) throws ContractException {
-        if(grade > 0 && grade <= 10) {
-//            if ()
-        } else {
-            throw new ContractException("Number must be in 1-10");
-        }
-
         if(!student_addresses.contains(sender)) throw new ContractException("Only students can post feedback");
         if(!(grade > 0 && grade <= 10)) throw new ContractException("Number must be in 1-10");
         if(state == FieldState.Finished) throw new ContractException("Field has ended");
+        teacherScore += grade;
     }
 
-    public String[] getBadges() {
-        return null;
+    public String[] getBadges(String sender) throws ContractException {
+        if(!teacher_address.equals(sender)) throw new ContractException("Only the teacher can collect badges");
+        List<String> earnedBadges = new ArrayList<String>();
+        for (Map.Entry<Integer, String> badge : badges.entrySet()) {
+            if(teacherScore >= badge.getKey()) {
+                earnedBadges.add(badge.getValue());
+            }
+        }
+        return (String[]) earnedBadges.toArray();
     }
 
-    public void endField() {
-
+    public void endField(String sender) throws ContractException {
+        if(!teacher_address.equals(sender)) throw new ContractException("Only the teacher can collect badges");
+        if(state == FieldState.Finished) throw new ContractException("Field has already ended");
+        state = FieldState.Finished;
     }
-
-    public void require() {
-
-    }
-
-
-    //*
-    // pragma solidity ^0.4.23;
-    //
-    //Contract FieldTeacherBadges {
-    //    address teacher;
-    //    address[] students;
-    //
-    //    mapping (uint => string)[] badges;
-    //
-    //    enum FieldState { Active, Finished }
-    //    FieldState state;
-    //
-    //    uint teacherScore;
-    //
-    //    modifier isTeacher {
-    //        require(msg.sender == teacher, "Must be teacher");
-    //        _;
-    //    }
-    //
-    //    constructor(address[] _students) public {
-    //        teacherScore = 0;
-    //        teacher = msg.sender;
-    //        students = _students;
-    //        state = FieldState.Active;
-    //
-    //        // Set the badges
-    //        badges[1] = "🎉 First grade";
-    //        badges[20] = "😃 People are happy";
-    //        badges[40] = "😀 Best teacher eveerrr";
-    //        badges[80] = "🤩 Absolute legend";
-    //    }
-    //
-    //    function postFeedback(uint8 _grade) payable public {
-    //        require(_grade > 0 && _grade <= 10, "Number must be in 1-10");
-    //        // require(msg.value == 0.1 ether, "Transfer 0.1 Eth to join");
-    //        require(state == FieldState.Active, "Field has ended");
-    //        require(students[msg.sender].exists(), "Only students can post feedback");
-    //        teacherScore += _grade;
-    //    }
-    //
-    //    function getBadges() public isTeacher {
-    //        string[] earnedBadges = [];
-    //        for(uint i = teacherScore; i > 0; i--) {
-    //            if (badges[i].exists) {
-    //                earnedBadges.push(badges[i]);
-    //            }
-    //        }
-    //        return earnedBadges;
-    //    }
-    //
-    //    function endField() public isTeacher {
-    //        state = FieldState.Finished;
-    //    }
-    //
-    //}
-    // *//
 }

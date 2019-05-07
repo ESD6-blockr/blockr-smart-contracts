@@ -1,5 +1,7 @@
 package main.contracts;
 
-public interface Contract {
+import java.io.Serializable;
+
+public interface Contract extends Serializable {
 
 }
