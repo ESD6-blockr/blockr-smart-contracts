@@ -90,7 +90,7 @@ public class Transaction {
     private byte[] gasLimit;
     /* An unlimited size byte array specifying
      * input [data] of the message call or
-     * Initialization code for a new contract */
+     * Initialization code for a new Contract */
     private final byte[] data;
     private final byte chainId;
     /* the elliptic curve signature
@@ -131,7 +131,7 @@ public class Transaction {
         }
     }
 
-    /* creation contract tx
+    /* creation Contract tx
      * [ nonce, gasPrice, gasLimit, "", endowment, init, signature(v, r, s) ]
      * or simple send tx
      * [ nonce, gasPrice, gasLimit, receiveAddress, value, data, signature(v, r, s) ]
