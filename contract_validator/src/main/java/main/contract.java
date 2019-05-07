@@ -2,12 +2,13 @@ package main;
 
 import main.exceptions.ContractException;
 
+import java.util.List;
 import java.util.Map;
 
 public class contract {
 
     private String teacher_address;
-    private String[] student_addresses;
+    private List<String> student_addresses;
 
     private Map<Integer, String> badges;
 
@@ -39,7 +40,9 @@ public class contract {
             throw new ContractException("Number must be in 1-10");
         }
 
-//        !(grade > 0 && grade <= 10) ? throw new ContractException("Number must be in 1-10");
+        if(student_addresses) throw new ContractException("Number must be in 1-10");
+        if(!(grade > 0 && grade <= 10)) throw new ContractException("Number must be in 1-10");
+        if(state == FieldState.Finished) throw new ContractException("Field has ended");
     }
 
     public String[] getBadges() {
