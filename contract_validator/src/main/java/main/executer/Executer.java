@@ -1,16 +1,30 @@
 package main.executer;
 
-import org.ethereum.util.RLP;
-import org.ethereum.util.RLPElement;
+import main.contracts.IContract;
 
+import java.io.*;
 import java.util.List;
 
 public class Executer {
-    private byte[] rawData;
 
-    public Executer(byte[] rawData) {
-        this.rawData = rawData;
-        List<RLPElement> transaction = RLP.decodeList(rawData);
+    private IContract contract;
+
+    public Executer(byte[] contract) throws IOException, ClassNotFoundException {
+
+        this.contract = this.deserializeContract(contract);
+
+        //Run the contract constructor
+        this.contract.initialize();
+
+    }
+
+    private IContract deserializeContract(byte[] contract) throws IOException, ClassNotFoundException {
+
+        ByteArrayInputStream bis = new ByteArrayInputStream(contract);
+
+        ObjectInput in = new ObjectInputStream(bis);
+
+        return (IContract)in.readObject();
 
     }
 }
