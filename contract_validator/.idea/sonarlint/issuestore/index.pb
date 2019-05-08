@@ -5,8 +5,6 @@ Y
 )src/main/java/main/ContractValidator.java,d\4\d479e579979733c70d7d85c3cccf820c58eaa4e6
 Y
 )src/main/java/main/executer/Executer.java,4\d\4dad4cfbc339662a29eb2193109eaabc1225b3a3
-\
-,src/main/java/main/executer/Transaction.java,2\3\23e8c8ac399da91724b514f069175b401717460f
 d
 4src/main/java/main/exceptions/ContractException.java,4\5\45647f3c89ba5e1b6bb1cc677cc2ce9be92bf1dd
 Z
