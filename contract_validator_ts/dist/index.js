@@ -6,4 +6,5 @@ function hello(word) {
     return "Hello " + word + "! ";
 }
 exports.hello = hello;
+console.log(hello());
 //# sourceMappingURL=index.js.map
