@@ -1,16 +1,16 @@
-class ReviewContract {
+export class ReviewContract {
     // The IPFS hash of the file that needs to be reviewed
-    ipfsHash: string
+    private ipfsHash: string
 
     // The owner address of the contract
-    teacher: string
+    private teacher: string
 
     // An array of student addresses that are allowed
     // to review the file
-    students: string[]
+    private students: string[]
 
     // Anonymous feedback
-    feedback: string[]
+    private feedback: string[]
 
     constructor(hash: string, teacher: string, students: string[]) {
         this.ipfsHash = hash
