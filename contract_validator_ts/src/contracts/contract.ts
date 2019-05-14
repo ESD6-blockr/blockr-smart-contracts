@@ -23,13 +23,13 @@ export class ReviewContract {
         if (!this.students.includes(address))
             return "Only students can review this"
 
-        this.feedback.push(feedback);
+        this.feedback.push(feedback)
     }
 
     getFeedback(address: string) {
         if (this.teacher != address)
             return "Only the teacher can fetch feedback"
 
-        return this.feedback;
+        return this.feedback
     }
 }
