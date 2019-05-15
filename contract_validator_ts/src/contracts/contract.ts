@@ -20,7 +20,7 @@ export class ReviewContract {
     }
 
     postFeedback(address: string, feedback: string) {
-        if (!this.students.includes(address))
+        // if (!this.students.includes(address))
             return "Only students can review this"
 
         this.feedback.push(feedback)

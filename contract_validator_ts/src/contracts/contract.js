@@ -8,8 +8,8 @@ var ReviewContract = /** @class */ (function () {
         this.feedback = [];
     }
     ReviewContract.prototype.postFeedback = function (address, feedback) {
-        if (!this.students.includes(address))
-            return "Only students can review this";
+        // if (!this.students.includes(address))
+        return "Only students can review this";
         this.feedback.push(feedback);
     };
     ReviewContract.prototype.getFeedback = function (address) {
