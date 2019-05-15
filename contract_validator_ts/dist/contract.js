@@ -7,8 +7,8 @@ class ReviewContract {
         this.feedback = [];
     }
     postFeedback(address, feedback) {
-        if (!this.students.includes(address))
-            return "Only students can review this";
+        // if (!this.students.includes(address))
+        //     return "Only students can review this";
         this.feedback.push(feedback);
     }
     getFeedback(address) {

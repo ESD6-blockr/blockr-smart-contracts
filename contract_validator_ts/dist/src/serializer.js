@@ -4,6 +4,10 @@ class Serialize {
     serialize(data) {
     }
     deserialize(data) {
+        let parsedJSON = JSON.parse(data);
+        if (parsedJSON.functionName && parsedJSON.functionParameters && parsedJSON.contract) {
+            return parsedJSON;
+        }
     }
 }
 exports.Serialize = Serialize;
