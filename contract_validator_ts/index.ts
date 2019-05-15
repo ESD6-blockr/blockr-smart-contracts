@@ -3,7 +3,8 @@ import { deflate, inflate, Serialize } from 'serialazy'
 
 let contract = new ReviewContract("IPFS_fafadsf1231f", "42133123", ["12312", "123213"])
 
-console.log(JSON.stringify(contract));
+console.log(JSON.stringify(contract) + "\n\n")
+console.log(JSON.stringify(ReviewContract.toString()))
 
 // 1. Register contract receiver (using other groups package)
 // 2. Serializer -> desirilze ofzo het contract
