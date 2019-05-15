@@ -1,12 +1,4 @@
-import { ReviewContract } from "./src/contracts/contract"
-import { deflate, inflate, Serialize } from 'serialazy'
 
-let contract = new ReviewContract("IPFS_fafadsf1231f", "42133123", ["12312", "123213"])
+let request = JSON.parse('[ [ { "functionName": "constructor", "functionParameters": [ "ipfs", "owner address", [ "address1", "address2", "address3" ] ] } ], { "ReviewContract": "class ReviewContract {\n // The IPFS hash of the file that needs to be reviewed\n // The owner address of the contract\n // An array of student addresses that are allowed\n // to review the file\n // Anonymous feedback\n constructor(hash, teacher, students) {\n this.ipfsHash = void 0;\n this.teacher = void 0;\n this.students = void 0;\n this.feedback = void 0;\n this.ipfsHash = hash;\n this.teacher = teacher;\n this.students = students;\n this.feedback = [];\n }\n\n postFeedback(address, feedback) {\n if (!this.students.includes(address)) return \"Only students can review this\";\n this.feedback.push(feedback);\n }\n\n getFeedback(address) {\n if (this.teacher !== address) return \"Only the teacher can fetch feedback\";\n return this.feedback;\n }\n\n}" } ]');
 
-console.log(JSON.stringify(contract));
-
-// 1. Register contract receiver (using other groups package)
-// 2. Serializer -> desirilze ofzo het contract
-// 3. Erachter komen wat er uitgevoerd moet worden en dat dan ook doen
-// 4. Serializer -> serializeer het contract
-// 5. Stuur contract terug naar validator
+console.log(request.functionName);
