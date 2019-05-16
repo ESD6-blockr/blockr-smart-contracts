@@ -12,7 +12,7 @@ let data = '{ "function": { "functionName": "constructor", "functionParameters":
 const serializer = new Serialize ;
 let parsedJSON = serializer.deserialize(data)
 
-let contractTemplate = eval('(' + parsedJSON.classTemplate.contract + ')');
+// let contractTemplate = eval('(' + parsedJSON.classTemplate.contract + ')');
 
 // console.log(contractTemplate);
 

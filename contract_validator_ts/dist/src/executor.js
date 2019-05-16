@@ -5,7 +5,7 @@ class Executor {
     }
     executeContract(contract) {
         // console.log(contract)
-        console.log(eval(contract.classTemplate.contract));
+        // console.log(eval(contract.classTemplate.contract));
     }
 }
 exports.Executor = Executor;

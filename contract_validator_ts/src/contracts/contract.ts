@@ -12,7 +12,14 @@ export class ReviewContract {
     // Anonymous feedback
     private feedback: string[]
 
-    constructor(hash: string, teacher: string, students: string[]) {
+    constructor(hash: string, teacher: string, students: string[], feedback: string[]) {
+        this.ipfsHash = hash
+        this.teacher = teacher
+        this.students = students
+        this.feedback = feedback
+    }
+
+    initConstructor(hash: string, teacher: string, students: string[], feedback: string[]) {
         this.ipfsHash = hash
         this.teacher = teacher
         this.students = students
