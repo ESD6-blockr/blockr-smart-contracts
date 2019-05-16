@@ -4,7 +4,7 @@ var Executor = /** @class */ (function () {
     function Executor() {
     }
     Executor.prototype.executeContract = function (contract) {
-        console.log(contract);
+        // console.log(contract)
         eval(contract.contract);
     };
     return Executor;

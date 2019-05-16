@@ -3,8 +3,10 @@ export class Executor {
     }
     
     executeContract(contract: any) {
-        console.log(contract)
+        
+        // console.log(contract)
 
-        // eval(contract.contract);
+        eval(contract.contract);
+
     }
 }
