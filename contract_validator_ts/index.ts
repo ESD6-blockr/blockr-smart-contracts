@@ -14,7 +14,7 @@ let parsedJSON = serializer.deserialize(data)
 
 let contractTemplate = eval('(' + parsedJSON.classTemplate.contract + ')');
 
-console.log(contractTemplate);
+// console.log(contractTemplate);
 
 // let contract = new contractTemplate;
 

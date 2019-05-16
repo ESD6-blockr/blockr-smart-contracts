@@ -5,9 +5,11 @@ class Serialize {
     }
     deserialize(data) {
         let parsedJSON = JSON.parse(data);
-        if (parsedJSON.functionName && parsedJSON.functionParameters && parsedJSON.contract) {
-            return parsedJSON;
-        }
+        console.log(parsedJSON.function.functionName);
+        return parsedJSON;
+        // if (parsedJSON.functionName && parsedJSON.functionParameters && parsedJSON.contract) {
+        //      return parsedJSON;
+        // }
     }
 }
 exports.Serialize = Serialize;

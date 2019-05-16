@@ -4,8 +4,8 @@ class Executor {
     constructor() {
     }
     executeContract(contract) {
-        console.log(contract);
-        // eval(contract.contract);
+        // console.log(contract)
+        console.log(eval(contract.classTemplate.contract));
     }
 }
 exports.Executor = Executor;
