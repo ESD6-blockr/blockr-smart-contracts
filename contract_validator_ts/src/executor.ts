@@ -47,6 +47,11 @@ export class Executor {
         return classInstance[functionName](...args);
     }
 
+    /**
+     * executes the received contract
+     * @param any the smart contract data and fucntions that need to be called
+     * @returns a Json string of the executed constract that needs to be put on the blockchain
+     */
     public static executeContract(data: any) {
         let contract: object = this.rebuildContract(data);
         let functions = this.readFunctions(data);
