@@ -48,10 +48,12 @@ export class Executor {
     }
 
     executeContract(data: any) {
-        let contract: Object = this.rebuildContract(data);
+        let contract: object = this.rebuildContract(data);
         let functions = this.readFunctions(data);
 
-        this.executeFunction(contract, functions);
+        if(functions) {
+            this.executeFunction(contract, functions);
+        }
 
         console.log(contract);
 
