@@ -4,9 +4,9 @@ export class Executor {
      * @param contractJson, a Json string following the contract conventions
      * @returns a instance of the contract
      */
-    rebuildContract(contractJson: any) {
+    private static rebuildContract(contractJson: any) {
 
-        let contractTemplate = eval('(' + contractJson.classTemplate.contract + ')');
+        let contractTemplate = eval('(' + contractJson["classTemplate"]["contract"] + ')');
         let constructorParams = contractJson["constructor"];
         let args: any[] = [];
 
@@ -19,11 +19,11 @@ export class Executor {
     }
 
     /**
-     * this reads all functions from the contract json
+     * gets the Json for the execution of a function
      * @contractJson a Json string following the contract conventions
-     * @returns a instance of the contract
+     * @returns a Json string with the name and parameters from the function
      */
-    readFunctions(contractJson: any) {
+    private static readFunctions(contractJson: any) {
         return contractJson.function;
     }
 
@@ -33,7 +33,7 @@ export class Executor {
      * @param functionJson, the Json string of the function following the contract conventions
      * @returns the return value of the executed function
      */
-    executeFunction(classInstance: any, functionJson: any) {
+    private static executeFunction(classInstance: any, functionJson: any) {
         let functionName = functionJson["functionName"];
         let functionParams = functionJson["functionParameters"];
 
@@ -47,7 +47,7 @@ export class Executor {
         return classInstance[functionName](...args);
     }
 
-    executeContract(data: any) {
+    public static executeContract(data: any) {
         let contract: object = this.rebuildContract(data);
         let functions = this.readFunctions(data);
 
@@ -65,7 +65,7 @@ export class Executor {
      * @param classInstance the instance of the class to get the functions from
      * @returns a Json string with the functions an their parameters
      */
-    getFunctionsFromClass(classInstance: any) {
+    public static getFunctionsFromClass(classInstance: any) {
         let functionArray = {
             functions: []
         };
@@ -87,7 +87,7 @@ export class Executor {
      * @param func, the function to get the parameters from
      * @returns string with the function parameters
      */
-    private getParamNames(func: any) {
+    private static getParamNames(func: any) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+)/g;
 
