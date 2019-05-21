@@ -102,7 +102,7 @@ export class Executor {
      * @param template, the template of this contract
      * @returns json that needs to be saved on the blockchain
      */
-    private returnJson(contract: object, template: string) {
+    private static returnJson(contract: object, template: string) {
         return {
             "constructor": JSON.stringify(contract),
             "classTemplate": {

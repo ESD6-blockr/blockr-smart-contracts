@@ -34,8 +34,8 @@ let data = {
 // let parsedJSON = serializer.deserialize(data)
 
 // // 3. Erachter komen wat er uitgevoerd moet worden en dat dan ook doen
-const executor = new Executor
-executor.executeContract(data)
+// const executor = new Executor
+Executor.executeContract(data)
 // let executed: Object = executor.executeContract(data)
 
 // 4. Serializer -> serializeer het contract
