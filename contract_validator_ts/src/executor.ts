@@ -5,6 +5,7 @@ export class Executor {
      * @returns a instance of the contract
      */
     rebuildContract(contractJson: any) {
+
         let contractTemplate = eval('(' + contractJson.classTemplate.contract + ')');
         let constructorParams = contractJson["constructor"];
         let args: any[] = [];
