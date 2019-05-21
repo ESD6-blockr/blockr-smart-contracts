@@ -55,7 +55,8 @@ export class Executor {
 
         console.log(contract);
 
-        // Nu contract weer terug serializeren
+        let json = this.returnJson(contract, data.classTemplate.contract);
+        console.log(json);
     }
 
     /**
@@ -73,7 +74,7 @@ export class Executor {
             if (functions.hasOwnProperty(val)) {
                 let func = functions[val].value;
                 let paras = this.getParamNames(func);
-                functionArray.functions.push({functionName: val, parameters: paras});
+                functionArray.functions.push({ functionName: val, parameters: paras });
             }
         }
         return JSON.stringify(functionArray);
@@ -91,5 +92,20 @@ export class Executor {
 
         let fnStr = func.toString().replace(STRIP_COMMENTS, '');
         return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
+    }
+
+    /**
+     * gets the parameters from the given function
+     * @param contract, the contract object that has been executed
+     * @param template, the template of this contract
+     * @returns json that needs to be saved on the blockchain
+     */
+    private returnJson(contract: object, template: string) {
+        return {
+            "constructor": JSON.stringify(contract),
+            "classTemplate": {
+                "contract": template
+            }
+        }
     }
 }
