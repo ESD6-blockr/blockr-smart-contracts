@@ -1,7 +1,7 @@
 export class Executor {
     /**
      * this rebuilds a contract from json and returns
-     * @contractJson a Json string following the contract conventions
+     * @param contractJson, a Json string following the contract conventions
      * @returns a instance of the contract
      */
     rebuildContract(contractJson: any) {
@@ -29,8 +29,8 @@ export class Executor {
 
     /**
      * executes a function in the given contract
-     * @classInstance an instance of the contract where the method needs to be executed
-     * @functionJson the Json string of the function following the contract conventions
+     * @param classInstance, an instance of the contract where the method needs to be executed
+     * @param functionJson, the Json string of the function following the contract conventions
      * @returns the return value of the executed function
      */
     executeFunction(classInstance: any, functionJson: any) {
@@ -60,13 +60,17 @@ export class Executor {
         // Nu contract weer terug serializeren
     }
 
-
-    getFunctionsFromClass(classObj: any) {
+    /**
+     * creates a Json string with all functions and their parameters from the given class instance
+     * @param classInstance the instance of the class to get the functions from
+     * @returns a Json string with the functions an their parameters
+     */
+    getFunctionsFromClass(classInstance: any) {
         let functionArray = {
             functions: []
         };
 
-        let functions = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(classObj));
+        let functions = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(classInstance));
         for (let val in functions) {
             if (functions.hasOwnProperty(val)) {
                 let func = functions[val].value;
@@ -77,14 +81,17 @@ export class Executor {
         return JSON.stringify(functionArray);
     }
 
+
+    /**
+     * gets the parameters from the given function
+     * @param func, the function to get the parameters from
+     * @returns string with the function parameters
+     */
     private getParamNames(func: any) {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+)/g;
 
         let fnStr = func.toString().replace(STRIP_COMMENTS, '');
-        let result = fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
-        if (result === null)
-            result = [];
-        return result;
+        return fnStr.slice(fnStr.indexOf('(') + 1, fnStr.indexOf(')')).match(ARGUMENT_NAMES);
     }
 }
