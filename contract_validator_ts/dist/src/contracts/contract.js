@@ -1,7 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ReviewContract {
-    constructor(hash, teacher, students) {
+    constructor(hash, teacher, students, feedback) {
+        this.ipfsHash = hash;
+        this.teacher = teacher;
+        this.students = students;
+        this.feedback = feedback;
+    }
+    initConstructor(hash, teacher, students, feedback) {
         this.ipfsHash = hash;
         this.teacher = teacher;
         this.students = students;
