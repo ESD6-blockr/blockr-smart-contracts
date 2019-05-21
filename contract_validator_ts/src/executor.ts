@@ -49,8 +49,8 @@ export class Executor {
 
     /**
      * executes the received contract
-     * @param any the smart contract data and fucntions that need to be called
-     * @returns a Json string of the executed constract that needs to be put on the blockchain
+     * @param data, the smart contract data and functions that need to be called
+     * @returns a Json string of the executed contract that needs to be put on the blockchain
      */
     public static executeContract(data: any) {
         let contract: object = this.rebuildContract(data);
