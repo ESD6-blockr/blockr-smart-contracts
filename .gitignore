@@ -177,3 +177,8 @@ fabric.properties
 .idea/sonarlint
 
 # End of https://www.gitignore.io/api/intellij
+\.idea/sonarIssues\.xml
+
+\.idea/inspectionProfiles/Project_Default\.xml
+
+\.idea/blockr-smart-contracts\.iml
