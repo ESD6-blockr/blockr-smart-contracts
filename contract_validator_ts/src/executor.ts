@@ -55,8 +55,6 @@ export class Executor {
             this.executeFunction(contract, functions);
         }
 
-        console.log(contract);
-
         let json = this.returnJson(contract, data.classTemplate.contract);
         console.log(json);
     }
@@ -103,11 +101,11 @@ export class Executor {
      * @returns json that needs to be saved on the blockchain
      */
     private static returnJson(contract: object, template: string) {
-        return {
+        return JSON.stringify({
             "constructor": JSON.stringify(contract),
             "classTemplate": {
                 "contract": template
             }
-        }
+        });
     }
 }
