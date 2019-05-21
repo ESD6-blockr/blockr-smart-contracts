@@ -85,7 +85,6 @@ export class Executor {
         return JSON.stringify(functionArray);
     }
 
-
     /**
      * gets the parameters from the given function
      * @param func, the function to get the parameters from
