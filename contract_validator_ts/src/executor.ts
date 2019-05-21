@@ -51,9 +51,7 @@ export class Executor {
         let contract: Object = this.rebuildContract(data);
         let functions = this.readFunctions(data);
 
-        functions.forEach(function (func: any) {
-            contract = this.executeFunction(contract, func);
-        });
+        this.executeFunction(contract, functions);
 
         console.log(contract);
 
