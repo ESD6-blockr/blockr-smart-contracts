@@ -1,11 +1,4 @@
-import { ReviewContract } from "./contracts/contract"
 import { Executor } from "./executor";
-
-// console.log(JSON.stringify(contract) + "")
-// console.log(JSON.stringify(ReviewContract.toString()))
-
-// 1. Register contract receiver (using other groups package)
-// 2. Serializer -> desirilze ofzo het contract
 
 let data = {
     "constructor": {
@@ -29,17 +22,5 @@ let data = {
     }
 };
 
-// const serializer = new Serialize
-// let parsedJSON = serializer.deserialize(data)
-
-// // 3. Erachter komen wat er uitgevoerd moet worden en dat dan ook doen
-// const executor = new Executor
-Executor.executeContract(data)
-// let executed: Object = executor.executeContract(data)
-
-// 4. Serializer -> serializeer het contract
-// let serialized: JSON = serializer.serialize(executed)
-
-// 5. Stuur contract terug naar validator
-// console.log("SENT: " + serialized.toString());
+Executor.executeContract(data);
 

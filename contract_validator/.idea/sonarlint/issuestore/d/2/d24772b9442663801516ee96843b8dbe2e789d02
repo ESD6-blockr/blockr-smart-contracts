@@ -1,7 +1,0 @@
-
-ysquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(î®Ş“8¹ÕÂ‹©-
-ysquid:S00116"ZRename this field "teacher_address" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ê‚Œ8¹ÕÂ‹©-
-€squid:S00116"\Rename this field "student_addresses" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÙÁÎ£şÿÿÿÿ8¹ÕÂ‹©-
-Qsquid:S30205".Pass "new String[0]" as argument to "toArray".(Ãæµºıÿÿÿÿ8«ßŸ©-
-ysquid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(î®Ş“8¹ÕÂ‹©-
-Zsquid:UnusedPrivateMethod".Remove this unused private "isTeacher" method.(õ©’ª8ĞÀ‹©-
