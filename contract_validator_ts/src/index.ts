@@ -1,5 +1,4 @@
 import { ReviewContract } from "./contracts/contract"
-import { Serialize } from './serializer';
 import { Executor } from "./executor";
 
 // console.log(JSON.stringify(contract) + "")
