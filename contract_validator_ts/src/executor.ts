@@ -1,3 +1,5 @@
+import {getControlFlowEnd} from "tsutils";
+
 export class Executor {
     /**
      * this rebuilds a contract from json and returns
@@ -6,7 +8,7 @@ export class Executor {
      */
     private static rebuildContract(contractJson: any) {
 
-        let contractTemplate = eval('(' + contractJson["classTemplate"]["contract"] + ')');
+        let contractTemplate = this.getContractTemplate(contractJson);
         let constructorParams = contractJson["constructor"];
         let args: any[] = [];
 
@@ -19,12 +21,12 @@ export class Executor {
     }
 
     /**
-     * gets the Json for the execution of a function
-     * @contractJson a Json string following the contract conventions
-     * @returns a Json string with the name and parameters from the function
+     * creates a template of a contract from Json, can be improved by validating the evaluated contracts
+     * @param contractJson, a Json string following the contract conventions
+     * @returns a template of a contract
      */
-    private static readFunctions(contractJson: any) {
-        return contractJson.function;
+    private static getContractTemplate(contractJson: any) {
+        return eval('(' + contractJson["classTemplate"]["contract"] + ')');
     }
 
     /**
@@ -54,27 +56,28 @@ export class Executor {
      */
     public static executeContract(data: any) {
         let contract: object = this.rebuildContract(data);
-        let functions = this.readFunctions(data);
+
+        let functions = data["function"];
 
         if(functions) {
             this.executeFunction(contract, functions);
         }
 
-        let json = this.returnJson(contract, data.classTemplate.contract);
-        console.log(json);
+        return this.returnJson(contract, data.classTemplate.contract);
     }
 
     /**
      * creates a Json string with all functions and their parameters from the given class instance
-     * @param classInstance the instance of the class to get the functions from
+     * @param contractJson the smart contract data
      * @returns a Json string with the functions an their parameters
      */
-    public static getFunctionsFromClass(classInstance: any) {
+    public static getContractFunctions(contractJson: any) {
         let functionArray = {
             functions: []
         };
 
-        let functions = Object.getOwnPropertyDescriptors(Object.getPrototypeOf(classInstance));
+        let contractTemplate = this.getContractTemplate(contractJson);
+        let functions = Object.getOwnPropertyDescriptors(contractTemplate.prototype);
         for (let val in functions) {
             if (functions.hasOwnProperty(val)) {
                 let func = functions[val].value;
@@ -87,6 +90,7 @@ export class Executor {
 
     /**
      * gets the parameters from the given function
+     * @author
      * @param func, the function to get the parameters from
      * @returns string with the function parameters
      */
