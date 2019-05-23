@@ -22,6 +22,7 @@ let data = {
     }
 };
 
-console.log(Executor.executeContract(data));
+//Executor.executeContract(data);
 console.log(Executor.getContractFunctions(data));
+
 

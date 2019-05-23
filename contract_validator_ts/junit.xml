@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="3" failures="0" time="6.968">
+  <testsuite name="calculate" errors="0" failures="0" skipped="0" timestamp="2019-05-23T08:04:56" time="2.395" tests="1">
+    <testcase classname="calculate should " name="calculate should " time="0.003">
+    </testcase>
+  </testsuite>
+  <testsuite name="executeContract" errors="0" failures="0" skipped="0" timestamp="2019-05-23T08:04:56" time="3.011" tests="2">
+    <testcase classname="executeContract should succeed" name="executeContract should succeed" time="0.005">
+    </testcase>
+    <testcase classname="getContractFunctions should succeed" name="getContractFunctions should succeed" time="0.001">
+    </testcase>
+  </testsuite>
+</testsuites>
