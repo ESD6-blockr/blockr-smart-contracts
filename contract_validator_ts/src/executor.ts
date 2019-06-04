@@ -7,7 +7,7 @@ export class Executor {
      * @param isInit, a boolean that specifies if is the first build of the contract
      * @returns a instance of the contract
      */
-    private static rebuildContract(contractJson: any, isInit: boolean) {
+    private static rebuildContract(contractJson: any, isInit: boolean): object {
         let contractTemplate = this.getContractTemplate(contractJson);
         if (!isInit) {
             let constructorParams = contractJson["constructor"];
@@ -77,7 +77,7 @@ export class Executor {
      * @param contractJson, a Json string following the contract conventions
      * @returns a template of a contract
      */
-    private static getContractTemplate(contractJson: any) {
+    private static getContractTemplate(contractJson: any): any {
         return eval('(' + contractJson["classTemplate"]["contract"] + ')');
     }
 
@@ -87,7 +87,7 @@ export class Executor {
      * @param functionJson, the Json string of the function following the contract conventions
      * @returns the return value of the executed function
      */
-    private static executeFunction(classInstance: any, functionJson: any) {
+    private static executeFunction(classInstance: any, functionJson: any): any {
         let functionName = functionJson["functionName"];
         let functionParams = functionJson["functionParameters"];
         let args: any[] = this.getArgs(functionParams, Object.getPrototypeOf(classInstance), functionName);
@@ -103,7 +103,7 @@ export class Executor {
      * @param data, the smart contract data and functions that need to be called
      * @returns a Json string of the executed contract that needs to be put on the blockchain
      */
-    public static executeContract(data: any) {
+    public static executeContract(data: any): string {
         let isInit: boolean = false;
         let functions = data["function"];
         if (functions !== null && functions["functionName"] === "initConstructor") {
@@ -111,7 +111,6 @@ export class Executor {
         }
 
         let contract: object = this.rebuildContract(data, isInit);
-
         let result: any;
 
         if (functions && contract !== null) {
@@ -128,7 +127,7 @@ export class Executor {
      * @param contractJson the smart contract data
      * @returns a Json string with the functions an their parameters
      */
-    public static getContractFunctions(contractJson: any) {
+    public static getContractFunctions(contractJson: any): string {
         let functionArray = {
             functions: []
         };
@@ -151,7 +150,7 @@ export class Executor {
      * @param func, the function to get the parameters from
      * @returns string with the function parameters
      */
-    private static getParamNames(func: any) {
+    private static getParamNames(func: any): string[] {
         const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
         const ARGUMENT_NAMES = /([^\s,]+)/g;
 
@@ -166,7 +165,7 @@ export class Executor {
      * @param template, the template of this contract
      * @returns json that needs to be saved on the blockchain
      */
-    private static returnJson(contract: object, result: any, template: string) {
+    private static returnJson(contract: object, result: any, template: string) : string{
         return JSON.stringify({
             "constructor": JSON.stringify(contract),
             "result": result,
