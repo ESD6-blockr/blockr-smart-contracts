@@ -1,0 +1,25 @@
+{
+  "functions":[
+    {
+      "functionName":"constructor",
+      "parameters":[
+        "hash",
+        "teacher",
+        "students"
+      ]
+    },
+    {
+      "functionName":"postFeedback",
+      "parameters":[
+        "address",
+        "feedback"
+      ]
+    },
+    {
+      "functionName":"getFeedback",
+      "parameters":[
+        "address"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+pipeline {
+  agent any
+  stages {
+    stage('Setup') {
+	    steps {
+	      nodejs(nodeJSInstallationName: 'NodeJS') { 
+	        sh 'npm install'
+	      } 
+	    }
+	  }
+    stage('Test') {
+      steps {
+	      nodejs(nodeJSInstallationName: 'NodeJS') { 
+	        sh 'npm run test'
+	      } 
+      }
+    }
+    stage('SonarQube analysis') {
+      environment {
+        scannerHome = tool 'SonarQubeScanner'
+      }
+      steps {
+	      nodejs(nodeJSInstallationName: 'NodeJS') {
+          withSonarQubeEnv('SonarQube') {
+            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-sc-ui -Dsonar.sources=src'
+          }
+          timeout(time: 15, unit: 'MINUTES') {
+            waitForQualityGate abortPipeline: true
+          }
+        }
+      }
+    }
+  }
+}
