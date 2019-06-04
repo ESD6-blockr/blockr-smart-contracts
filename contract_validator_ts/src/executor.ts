@@ -1,49 +1,76 @@
-import {IPeer} from '@blockr/blockr-p2p-lib'
+import "reflect-metadata";
 
 export class Executor {
     /**
-     * this rebuilds a contract from json and returns
+     * this rebuilds a contract from json and returns it
      * @param contractJson, a Json string following the contract conventions
+     * @param isInit, a boolean that specifies if is the first build of the contract
      * @returns a instance of the contract
      */
-    private static rebuildContract(contractJson: any) {
+    private static rebuildContract(contractJson: any, isInit: boolean) {
         let contractTemplate = this.getContractTemplate(contractJson);
-        let constructorParams = contractJson["constructor"];
-        let args: any[] = [];
+        if (!isInit) {
+            let constructorParams = contractJson["constructor"];
 
-        //if the constructor in the Json is incorrect constructorParams will be the default constructor
-        //if this is the case constructorParams will be a function and null will be returned to show that a error occurred
-        if(constructorParams instanceof Function) {
-            return null;
-        }
+            //if the constructor in the Json is incorrect constructorParams will be the default constructor
+            //if this is the case constructorParams will be a function and null will be returned to show that a error occurred
+            if (constructorParams instanceof Function) {
+                return null;
+            }
 
-        for (let param in constructorParams) {
-            if (constructorParams.hasOwnProperty(param)) {
-                if (!this.checkParameter(contractTemplate.prototype, "constructor", param)) {
-                    return null;
-                }
-                args.push(constructorParams[param]);
+            let args: any[] = this.getArgs(constructorParams, contractTemplate.prototype, "constructor");
+            if (args !== null) {
+                return new contractTemplate(...args);
+            }
+        } else {
+            let contract = new contractTemplate();
+            let initParams = contractJson["function"]["functionParameters"];
+            let args = this.getArgs(initParams, contractTemplate.prototype, "initConstructor");
+
+            if (args !== null) {
+                contract["initConstructor"](...args);
+                return contract;
             }
         }
-        return new contractTemplate(...args);
+        return null;
     }
 
     /**
-     * checks if a parameter is indeed part of the given function
+     * checks the given params for the amount and name
+     * @param fromArray the unchecked params
      * @param contractPrototype, a prototype of the contract
-     * @param functionName, the name of the function to execute
-     * @param parameterName, the parameter to check
-     * @returns true if the parameter is indeed included, else false is returned
+     * @param functionName, the name of the function to check
+     * @returns a array of the params or null if an error occurred.
      */
-    private static checkParameter(contractPrototype: any, functionName: string, parameterName: string) {
-        let functions = Object.getOwnPropertyDescriptors(contractPrototype);
-        if (functions[functionName]) {
-            let params = this.getParamNames(functions[functionName].value);
-            return params.includes(parameterName);
+    private static getArgs(fromArray: any[], contractPrototype, functionName: string): any[] {
+        let params: any[] = this.getParameters(contractPrototype, functionName);
+        let args: any[] = [];
+        for (let param in fromArray) {
+            if (fromArray.hasOwnProperty(param)) {
+                if (!params.includes(param)) {
+                    return null;
+                }
+                args.push(fromArray[param]);
+            }
         }
-        return false;
+        if (args.length !== params.length) {
+            return null;
+        }
+        return args;
     }
 
+    /**
+     * gives a array with all parameters of a function
+     * @param contractPrototype, a prototype of the contract
+     * @param functionName, the name of the function to execute
+     * @returns an array with all parameters of the given function
+     */
+    private static getParameters(contractPrototype: any, functionName: string): any[] {
+        let functions = Object.getOwnPropertyDescriptors(contractPrototype);
+        if (functions[functionName]) {
+            return this.getParamNames(functions[functionName].value);
+        }
+    }
 
     /**
      * creates a template of a contract from Json, can be improved by validating the evaluated contracts
@@ -63,18 +90,12 @@ export class Executor {
     private static executeFunction(classInstance: any, functionJson: any) {
         let functionName = functionJson["functionName"];
         let functionParams = functionJson["functionParameters"];
+        let args: any[] = this.getArgs(functionParams, Object.getPrototypeOf(classInstance), functionName);
 
-        let args: any[] = [];
-
-        for (let param in functionParams) {
-            if (functionParams.hasOwnProperty(param)) {
-                if (!this.checkParameter(Object.getPrototypeOf(classInstance), functionName, param)) {
-                    return null;
-                }
-                args.push(functionParams[param]);
-            }
+        if (args !== null) {
+            return classInstance[functionName](...args);
         }
-        return classInstance[functionName](...args);
+        return null;
     }
 
     /**
@@ -83,8 +104,14 @@ export class Executor {
      * @returns a Json string of the executed contract that needs to be put on the blockchain
      */
     public static executeContract(data: any) {
-        let contract: object = this.rebuildContract(data);
+        let isInit: boolean = false;
         let functions = data["function"];
+        if (functions !== null && functions["functionName"] === "initConstructor") {
+            isInit = true;
+        }
+
+        let contract: object = this.rebuildContract(data, isInit);
+
         let result: any;
 
         if (functions && contract !== null) {
