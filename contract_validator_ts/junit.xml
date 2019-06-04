@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="3" failures="0" time="6.968">
-  <testsuite name="calculate" errors="0" failures="0" skipped="0" timestamp="2019-05-23T08:04:56" time="2.395" tests="1">
-    <testcase classname="calculate should " name="calculate should " time="0.003">
-    </testcase>
-  </testsuite>
-  <testsuite name="executeContract" errors="0" failures="0" skipped="0" timestamp="2019-05-23T08:04:56" time="3.011" tests="2">
+<testsuites name="jest tests" tests="4" failures="0" time="3.283">
+  <testsuite name="executeContract" errors="0" failures="0" skipped="0" timestamp="2019-06-04T11:01:10" time="2.094" tests="4">
     <testcase classname="executeContract should succeed" name="executeContract should succeed" time="0.005">
     </testcase>
+    <testcase classname="executeContract should be null" name="executeContract should be null" time="0">
+    </testcase>
     <testcase classname="getContractFunctions should succeed" name="getContractFunctions should succeed" time="0.001">
+    </testcase>
+    <testcase classname="getContractFunctions should not match" name="getContractFunctions should not match" time="0.001">
     </testcase>
   </testsuite>
 </testsuites>
