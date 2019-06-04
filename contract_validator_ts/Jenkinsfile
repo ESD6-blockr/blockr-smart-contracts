@@ -18,7 +18,7 @@ pipeline {
       }
       post {
         always {
-          step([$class: 'CoberturaPublisher', coberturaReportFile: 'contract_validator/output/coverage/jest/cobertura-coverage.xml'])
+          step([$class: 'CoberturaPublisher', coberturaReportFile: 'contract_validator_ts/output/coverage/jest/cobertura-coverage.xml'])
         }
       }
     }
@@ -29,7 +29,7 @@ pipeline {
       steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') {
           withSonarQubeEnv('SonarQube') {
-            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-smart-contract -Dsonar.sources=./contract_validator_ts/src -Dsonar.javascript.lcov.reportPaths=./contract_validator/output/coverage/jest'
+            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-smart-contract -Dsonar.sources=./contract_validator_ts/src -Dsonar.javascript.lcov.reportPaths=./contract_validator_ts/output/coverage/jest'
           }
           timeout(time: 15, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
