@@ -24,7 +24,7 @@ pipeline {
       steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') {
           withSonarQubeEnv('SonarQube') {
-            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-smart-contract -Dsonar.sources=./contract_validator_ts/src'
+            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-smart-contract -Dsonar.sources=./contract_validator_ts/src -Dsonar.genericcoverage.unitTestReportPaths=./contract_validator_ts/reports/test-report.xml'
           }
           timeout(time: 15, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true

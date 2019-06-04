@@ -13,10 +13,20 @@
     "tsutils": "^3.10.0",
     "typescript": "^3.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest-sonar-reporter": "^2.0.0"
+  },
   "scripts": {
     "test": "jest",
     "testWithCoverage": "jest --coverage"
+  },
+  "jest": {
+    "testResultsProcessor": "jest-sonar-reporter"
+  },
+  "jestSonar": {
+    "reportPath": "reports",
+    "reportFile": "test-report.xml",
+    "indent": 2
   },
   "author": "",
   "license": "ISC"
