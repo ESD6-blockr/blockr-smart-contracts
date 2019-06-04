@@ -5,6 +5,7 @@ pipeline {
 	    steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') { 
 	        sh 'npm --prefix ./contract_validator_ts/ install'
+		sh 'npm i @types/jest'
 	      } 
 	    }
 	  }
