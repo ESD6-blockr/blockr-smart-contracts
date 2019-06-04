@@ -4,14 +4,14 @@ pipeline {
     stage('Setup') {
 	    steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') { 
-	        sh 'npm install'
+	        sh 'npm --prefix /contract_validator_ts/ install'
 	      } 
 	    }
 	  }
     stage('Test') {
       steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') { 
-	        sh 'npm run test'
+	        sh 'npm --prefix /contract_validator_ts/ run test'
 	      } 
       }
     }
