@@ -1,5 +1,3 @@
-import {IPeer} from '@blockr/blockr-p2p-lib'
-
 export class Executor {
     /**
      * this rebuilds a contract from json and returns

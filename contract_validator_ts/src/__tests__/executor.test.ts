@@ -1,48 +1,46 @@
 import { Executor} from "../executor";
+import {ReviewIPFSContract} from "./test.reviewContract";
+import data from "./valid/test.dataContract.json";
+import executed from "./valid/test.executedContract.json";
+import functions from "./valid/test.functionContract.json";
+import nvData from "./nonvalid/test.nonValidDataContract.json";
+import nvExecuted from "./nonvalid/test.nonValidExecutedContract.json"
+import nvFunctions from "./nonvalid/test.nonValidFunctionContract.json"
 
+let contract = new ReviewIPFSContract('9031D18C65871FED54C25BDBFD8852E0A2B49B2D','Student1',['Teacher1', 'Teacher2'],['Feedback']);
+let dataContract = <any>data;
+let executedContract = <any>executed;
+let functionContract = <any>functions;
+let nonValidData = <any>nvData;
+let nonValidExecuted = <any>nvExecuted;
+let nonValidFuncion = <any>nvFunctions;
 
-let contract = {
-    "constructor": {
-        "hash": "IPFS Hash",
-        "teacher": "Creator Address",
-        "students": [
-            "Ocean Man 1",
-            "Careless Whisper 2",
-            "Allstar 3"
-        ]
-    },
-    "function": {
-        "functionName": "postFeedback",
-        "functionParameters": {
-            "address": "Allstar 3",
-            "feedback": "feedback"
-        }
-    },
-    "classTemplate": {
-        "contract": "class ReviewContract {\n  // The IPFS hash of the file that needs to be reviewed\n  // The owner address of the contract\n  // An array of student addresses that are allowed\n  // to review the file\n  // Anonymous feedback\n  constructor(hash, teacher, students) {\n    this.ipfsHash = void 0;\n    this.teacher = void 0;\n    this.students = void 0;\n    this.feedback = void 0;\n    this.ipfsHash = hash;\n    this.teacher = teacher;\n    this.students = students;\n    this.feedback = [];\n  }\n\n  postFeedback(address, feedback) {\n    if (!this.students.includes(address)) return \"Only students can review this\";\n    this.feedback.push(feedback);\n  }\n\n  getFeedback(address) {\n    if (this.teacher !== address) return \"Only the teacher can fetch feedback\";\n    return this.feedback;\n  }\n\n}"
-    }
-};
-
-let executedContract = JSON.stringify({
-    "constructor": "{\"ipfsHash\":\"IPFS Hash\",\"teacher\":\"Creator Address\",\"students\":[\"Ocean Man 1\",\"Careless Whisper 2\",\"Allstar 3\"],\"feedback\":[\"feedback\"]}",
-    "classTemplate": {
-        "contract": "class ReviewContract {\n  // The IPFS hash of the file that needs to be reviewed\n  // The owner address of the contract\n  // An array of student addresses that are allowed\n  // to review the file\n  // Anonymous feedback\n  constructor(hash, teacher, students) {\n    this.ipfsHash = void 0;\n    this.teacher = void 0;\n    this.students = void 0;\n    this.feedback = void 0;\n    this.ipfsHash = hash;\n    this.teacher = teacher;\n    this.students = students;\n    this.feedback = [];\n  }\n\n  postFeedback(address, feedback) {\n    if (!this.students.includes(address)) return \"Only students can review this\";\n    this.feedback.push(feedback);\n  }\n\n  getFeedback(address) {\n    if (this.teacher !== address) return \"Only the teacher can fetch feedback\";\n    return this.feedback;\n  }\n\n}"
-    }
-});
-
-let contractFunction = JSON.stringify({"functions":[{"functionName":"constructor","parameters":["hash","teacher","students"]},{"functionName":"postFeedback","parameters":["address","feedback"]},{"functionName":"getFeedback","parameters":["address"]}]});
 describe('executeContract',function () {
+
     it('should succeed', function () {
-        let ctr = Executor.executeContract(contract);
+        let ctr = Executor.executeContract(dataContract);
         expect(ctr).not.toBeNull();
-        expect(ctr).toMatch(executedContract);
+        expect(ctr).toMatch(JSON.stringify(executedContract));
     });
+
+    it('should be null', function(){
+        let ctr = Executor.executeContract(nonValidData);
+        expect(ctr).toBeNull();
+    })
+
 })
 
 describe('getContractFunctions',function () {
     it('should succeed', function () {
-        let fnc = Executor.getContractFunctions(contract);
+        let fnc = Executor.getContractFunctions(dataContract);
         expect(fnc).not.toBeNull();
-        expect(fnc).toMatch(contractFunction)
+        expect(fnc).toMatch(JSON.stringify(functionContract));
     })
+
+    it('should not match', function(){
+        let fnc = Executor.getContractFunctions(nonValidData);
+        expect(fnc).not.toBeNull();
+        expect(fnc).not.toMatch(JSON.stringify(functionContract));
+    })
+
 })
