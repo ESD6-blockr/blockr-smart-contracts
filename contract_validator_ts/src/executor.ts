@@ -104,6 +104,11 @@ export class Executor {
      * @returns a Json string of the executed contract that needs to be put on the blockchain
      */
     public static executeContract(data: any): string {
+
+        if(!this.validateContract(data)) {
+            return null;
+        }
+
         let isInit: boolean = false;
         let functions = data["function"];
         if (functions !== null && functions["functionName"] === "initConstructor") {
@@ -128,6 +133,11 @@ export class Executor {
      * @returns a Json string with the functions an their parameters
      */
     public static getContractFunctions(contractJson: any): string {
+
+        if(!this.validateContract(contractJson)) {
+            return null;
+        }
+
         let functionArray = {
             functions: []
         };
@@ -176,20 +186,21 @@ export class Executor {
     }
 
     /**
-     * Checks if a contract has the required values
+     * checks if a contract has the required values
      * @param contract, the contract that needs validation
      * @returns boolean, whether the contract is valid or not
      */
     private static validateContract(contract: any) :boolean {
-        if (contract["classTemplate"]["contract"] != null) {
-            return true;
+        debugger
+        if (contract["classTemplate"]["contract"] === null) {
+            return false;
         }
-        if (contract["function"]["functionName"] != null && contract["function"]["functionParameters"] != null){
-            return true;
+        if (contract["function"] === null || contract["function"]["functionName"] === null || contract["function"]["functionParameters"] === null){
+            return false;
         }
-        if(contract["constructor"] != null){
-            return true;
+        if(contract["constructor"] === null){
+            return false;
         }
-        return false;
+        return true;
     }
 }

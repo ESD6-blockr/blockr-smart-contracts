@@ -11,7 +11,7 @@ let data = {
         ],
         "feedback": []
     },
-    "function": {
+    "funcion": {
         "functionName": "postFeedback",
         "functionParameters": {
             "address": "Allstar 3",
@@ -36,5 +36,6 @@ let data = {
     }
 };
 console.log(Executor.executeContract(data));
+console.log(Executor.getContractFunctions(data));
 
 
