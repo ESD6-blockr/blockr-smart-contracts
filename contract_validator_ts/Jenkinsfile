@@ -4,14 +4,14 @@ pipeline {
     stage('Setup') {
 	    steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') { 
-	        sh 'npm --prefix /contract_validator_ts/ install'
+	        sh 'npm --prefix ./contract_validator_ts/ install'
 	      } 
 	    }
 	  }
     stage('Test') {
       steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') { 
-	        sh 'npm --prefix /contract_validator_ts/ run test'
+	        sh 'npm --prefix ./contract_validator_ts/ run test'
 	      } 
       }
     }
@@ -22,7 +22,7 @@ pipeline {
       steps {
 	      nodejs(nodeJSInstallationName: 'NodeJS') {
           withSonarQubeEnv('SonarQube') {
-            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-sc-ui -Dsonar.sources=src'
+            sh '${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=blockr-smart-contract -Dsonar.sources=/contract_validator_ts/src'
           }
           timeout(time: 15, unit: 'MINUTES') {
             waitForQualityGate abortPipeline: true
