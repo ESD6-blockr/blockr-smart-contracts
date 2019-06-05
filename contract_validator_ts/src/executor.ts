@@ -173,9 +173,10 @@ export class Executor {
                 }
             }
             return JSON.stringify(functionArray);
-        } catch (e) {
+        } catch(e) {
             return null;
         }
+
     }
 
     /**
@@ -219,21 +220,4 @@ export class Executor {
 
     }
 
-    /**
-     * Checks if a contract has the required values
-     * @param contract, the contract that needs validation
-     * @returns boolean, whether the contract is valid or not
-     */
-    private static validateContract(contract: any) :boolean {
-        if (contract["classTemplate"]["contract"] != null) {
-            return true;
-        }
-        if (contract["function"]["functionName"] != null && contract["function"]["functionParameters"] != null){
-            return true;
-        }
-        if(contract["constructor"] != null){
-            return true;
-        }
-        return false;
-    }
 }

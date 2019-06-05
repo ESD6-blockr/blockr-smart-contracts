@@ -44,4 +44,11 @@ describe('getContractFunctions',function () {
         expect(fnc).not.toMatch(JSON.stringify(functionContract));
     })
 
+    it('should be null', function(){
+        function emptyJson(){
+           return Executor.getContractFunctions({});
+        }
+        expect(emptyJson()).toBeNull();
+    })
+
 })
