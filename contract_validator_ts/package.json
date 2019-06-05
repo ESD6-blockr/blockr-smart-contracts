@@ -7,16 +7,27 @@
     "test": "src/__tests__"
   },
   "dependencies": {
+    "@types/jest": "^24.0.13",
     "jest": "^24.8.0",
     "jest-junit": "^6.4.0",
     "ts-jest": "^24.0.2",
     "tsutils": "^3.10.0",
     "typescript": "^3.4.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest-sonar-reporter": "^2.0.0"
+  },
   "scripts": {
     "test": "jest",
-    "testWithCoverage": "jest --coverage"
+    "testWithCoverage": "jest --coverage",
+    "testCover": "jest --coverage --coverageDirectory=output/coverage/jest"
+  },
+  "jest": {
+    "testResultsProcessor": "jest-sonar-reporter",
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ]
   },
   "author": "",
   "license": "ISC"
