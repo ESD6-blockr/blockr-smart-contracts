@@ -9,29 +9,25 @@ export async function createPeer() {
     let peer: IPeer;
     peer = new Peer(PeerType.SMART_CONTRACT_ENGINE);
 
-    await peer.init("8081", ["0.0.0.0"]);
+    await peer.init("8081", ["145.93.164.122"]);
     await peer.registerReceiveHandlerForMessageType("testMessageType", async (message: Message, senderGuid: string) => {
         if (message && senderGuid) {
             console.log("message", message);
         }
     });
 
-    await peer.registerReceiveHandlerForMessageType("testMessageType", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
+    await peer.registerReceiveHandlerForMessageType("walletMessage", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
         if (message && senderGuid) {
             console.log("messageWreturn", message);
             response(message);
         }
     });
 
-    console.log(peer);
 
-    const engine = peer.getPeerOfType(PeerType.SMART_CONTRACT_ENGINE);
-    console.log('engine', engine);
+    const validator = peer.getPeerOfType(PeerType.SMART_CONTRACT_ENGINE);
+    console.log('validator', validator);
 
-    if(engine) {
-        let message = new Message("testMessageType", "testMessageType");
-
-        await peer.sendMessageAsync(message, engine[0]);
-        await peer.sendBroadcastAsync(message);
+    if(validator) {
+        peer.sendMessageAsync(new Message("testMessageType", "hoi"), validator[0]);
     }
 }
