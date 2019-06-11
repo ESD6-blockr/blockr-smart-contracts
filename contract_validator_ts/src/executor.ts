@@ -33,9 +33,8 @@ export class Executor {
                     return contract;
                 }
             }
-            return null;
         } catch (e) {
-            return null;
+            console.log(e);
         }
 
     }
@@ -100,7 +99,6 @@ export class Executor {
         }
 
     }
-
     /**
      * executes a function in the given contract
      * @param classInstance, an instance of the contract where the method needs to be executed
@@ -145,7 +143,7 @@ export class Executor {
                     return this.returnJson(contract, result, data.classTemplate.contract);
                 }
             }
-            return null;
+
         } catch (e) {
             return null;
         }
@@ -158,7 +156,7 @@ export class Executor {
      * @returns a Json string with the functions an their parameters
      */
     public static getContractFunctions(contractJson: any): string {
-        try {
+
             let functionArray = {
                 functions: []
             };
@@ -170,12 +168,12 @@ export class Executor {
                     let func = functions[val].value;
                     let paras = this.getParamNames(func);
                     functionArray.functions.push({functionName: val, parameters: paras});
+                } else {
+                    throw new Error('Function has no valid parameters')
                 }
             }
             return JSON.stringify(functionArray);
-        } catch(e) {
-            return null;
-        }
+
 
     }
 
