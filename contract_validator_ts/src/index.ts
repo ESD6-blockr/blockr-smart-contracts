@@ -1,5 +1,6 @@
 import {Executor} from "./executor";
 import {createPeer} from "./peer";
+import * as request from "request-promise-native";
 
 let data = {
     "constructor": {
@@ -37,8 +38,29 @@ let data = {
     }
 };
 //console.log(Executor.executeContract(data));
-console.log(Executor.getContractFunctions({}));
+//console.log(Executor.getContractFunctions(data));
 
-console.log(createPeer());
+//console.log(createPeer());
 
+export class Index{
+    constructor(){
+        this.getContract();
+    }
+    async getContract(){
+        try {
+            const baseUrl = 'http://145.93.165.33:3000';
+            const queryString = '/ptsmock/transaction';
+            var options = {
+                uri: baseUrl + queryString,
+            };
 
+            const result = await request.get(options);
+            console.log(result);
+        } catch (e) {
+            console.log(e)
+        }
+
+    }
+}
+
+new Index();
