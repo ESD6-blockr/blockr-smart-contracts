@@ -1,4 +1,6 @@
 import "reflect-metadata";
+import ts from "typescript";
+import {data2} from "./contractString";
 
 export class Executor {
     /**
@@ -7,11 +9,11 @@ export class Executor {
      * @param isInit, a boolean that specifies if is the first build of the contract
      * @returns a instance of the contract
      */
-    private static rebuildContract(contractJson: any, isInit: boolean): object {
+    public static rebuildContract(contractJson: any, isInit: boolean): object {
         try {
             let contractTemplate = this.getContractTemplate(contractJson);
             if (!isInit) {
-                let constructorParams = contractJson["constructor"];
+                let constructorParams = contractJson["constructor"]["functionParameters"];
 
                 //if the constructor in the Json is incorrect constructorParams will be the default constructor
                 //if this is the case constructorParams will be a function and null will be returned to show that a error occurred
@@ -38,6 +40,11 @@ export class Executor {
         }
 
     }
+
+    public static getHash(classInstance: object): string {
+        return classInstance["getHash"]();
+    }
+
 
     /**
      * checks the given params for the amount and name
@@ -93,12 +100,15 @@ export class Executor {
      */
     private static getContractTemplate(contractJson: any): any {
         try {
-            return eval('(' + contractJson["classTemplate"]["contract"] + ')');
+            //return eval('(' + contractJson["classTemplate"]["contract"] + ')');
+            let transpile = ts.transpile(data2["classTemplate"]["contract"]);
+            return eval(transpile);
         } catch (e) {
             return null;
         }
 
     }
+
     /**
      * executes a function in the given contract
      * @param classInstance, an instance of the contract where the method needs to be executed
@@ -106,7 +116,7 @@ export class Executor {
      * @returns the return value of the executed function
      */
     private static executeFunction(classInstance: any, functionJson: any): any {
-        try{
+        try {
             let functionName = functionJson["functionName"];
             let functionParams = functionJson["functionParameters"];
             let args: any[] = this.getArgs(functionParams, Object.getPrototypeOf(classInstance), functionName);
@@ -118,7 +128,6 @@ export class Executor {
         } catch (e) {
             return null;
         }
-
     }
 
     /**
@@ -143,7 +152,6 @@ export class Executor {
                     return this.returnJson(contract, result, data.classTemplate.contract);
                 }
             }
-
         } catch (e) {
             return null;
         }
@@ -155,26 +163,22 @@ export class Executor {
      * @param contractJson the smart contract data
      * @returns a Json string with the functions an their parameters
      */
-    public static getContractFunctions(contractJson: any): string {
+    public static getContractFunctions(contractJson: any) {
 
-            let functionArray = {
-                functions: []
-            };
+        let functionArray: any = [];
 
-            let contractTemplate = this.getContractTemplate(contractJson);
-            let functions = Object.getOwnPropertyDescriptors(contractTemplate.prototype);
-            for (let val in functions) {
-                if (functions.hasOwnProperty(val)) {
-                    let func = functions[val].value;
-                    let paras = this.getParamNames(func);
-                    functionArray.functions.push({functionName: val, parameters: paras});
-                } else {
-                    throw new Error('Function has no valid parameters')
-                }
+        let contractTemplate = this.getContractTemplate(contractJson);
+        let functions = Object.getOwnPropertyDescriptors(contractTemplate.prototype);
+        for (let val in functions) {
+            if (functions.hasOwnProperty(val)) {
+                let func = functions[val].value;
+                let paras = this.getParamNames(func);
+                functionArray.push({functionName: val, parameters: paras});
+            } else {
+                throw new Error('Function has no valid parameters')
             }
-            return JSON.stringify(functionArray);
-
-
+        }
+        return this.returnJson(contractJson["constructor"], contractJson["classTemplate"]["contract"],null, functionArray);
     }
 
     /**
@@ -201,17 +205,38 @@ export class Executor {
      * @param contract, the contract object that has been executed
      * @param result, the result of the executed function
      * @param template, the template of this contract
+     * @param functions, optional adds the functions of the given contract
      * @returns json that needs to be saved on the blockchain
      */
-    private static returnJson(contract: object, result: any, template: string) : string{
+    private static returnJson(contract: object, template: string, result?: any, functions?: any[]): string {
         try {
-            return JSON.stringify({
-                "constructor": JSON.stringify(contract),
-                "result": result,
-                "classTemplate": {
-                    "contract": template
-                }
-            });
+            if (functions) {
+                return JSON.stringify({
+                    "constructor": contract,
+                    "classTemplate": {
+                        "contract": template
+                    },
+                    "functions": functions
+                });
+            }
+            else if(result) {
+                return JSON.stringify({
+                    "constructor": JSON.stringify(contract),
+                    "result": result,
+                    "classTemplate": {
+                        "contract": template
+                    }
+
+                });
+            }
+            else {
+                return JSON.stringify({
+                    "constructor": JSON.stringify(contract),
+                    "classTemplate": {
+                        "contract": template
+                    }
+                });
+            }
         } catch (e) {
             return null;
         }
