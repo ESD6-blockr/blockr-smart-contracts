@@ -149,7 +149,6 @@ export class Executor {
         } catch (e) {
             return null;
         }
-
     }
 
     /**

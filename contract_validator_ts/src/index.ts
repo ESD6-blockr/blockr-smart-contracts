@@ -4,6 +4,7 @@ import {RESPONSE_TYPE} from "@blockr/blockr-p2p-lib/dist/interfaces/peer";
 import {Executor} from "./executor";
 import {data, data2, pairs} from "./contractString";
 import {getContract} from "./api-calls";
+import {hasOwnProperty} from "tslint/lib/utils";
 
 let peer: IPeer;
 
@@ -30,13 +31,12 @@ async function startPeer() {
     await peer.registerReceiveHandlerForMessageType("wallet_getAllHashes", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
         if (message && senderGuid) {
             getContract().then(res => {
-                //todo fix getting array from api
-                let transaction = JSON.parse(res);
+                let transactions = JSON.parse(res);
                 let hashes: any[] = [];
-                let contract = Executor.rebuildContract(JSON.parse(transaction["transactionHeader"]["smartContractData"]), false);
-                hashes.push(contract["ipfsHash"]);
+                for(let transaction of transactions) {
+                    hashes.push(Executor.rebuildContract(JSON.parse(transaction["transactionHeader"]["smartContractData"]),false)["ipfsHash"])
+                }
                 message.body = JSON.stringify(hashes);
-                console.log(message);
                 response(message);
             });
         }
