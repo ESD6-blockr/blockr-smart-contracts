@@ -1,6 +1,5 @@
 import "reflect-metadata";
 import ts from "typescript";
-import {data2} from "./contractString";
 
 export class Executor {
     /**
@@ -40,11 +39,6 @@ export class Executor {
         }
 
     }
-
-    public static getHash(classInstance: object): string {
-        return classInstance["getHash"]();
-    }
-
 
     /**
      * checks the given params for the amount and name
@@ -101,7 +95,7 @@ export class Executor {
     private static getContractTemplate(contractJson: any): any {
         try {
             //return eval('(' + contractJson["classTemplate"]["contract"] + ')');
-            let transpile = ts.transpile(data2["classTemplate"]["contract"]);
+            let transpile = ts.transpile(contractJson["classTemplate"]["contract"]);
             return eval(transpile);
         } catch (e) {
             return null;
@@ -149,7 +143,7 @@ export class Executor {
             if (functions && contract !== null) {
                 result = this.executeFunction(contract, functions);
                 if (result !== null) {
-                    return this.returnJson(contract, result, data.classTemplate.contract);
+                    return this.returnJson(contract, data.classTemplate.contract, result);
                 }
             }
         } catch (e) {

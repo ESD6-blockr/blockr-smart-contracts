@@ -46,14 +46,22 @@ export let data2 = {
             "feedback": []
         }
     },
+    // "function": {
+    //     "functionName": "initConstructor",
+    //     "functionParameters": {
+    //         "hash": "4312",
+    //         "owner": "134",
+    //         "reviewers": [
+    //             "1324"
+    //         ]
+    //     }
+    // },
     "function": {
-        "functionName": "initConstructor",
+        "functionName": "postFeedback",
         "functionParameters": {
-            "hash": "4312",
-            "owner": "134",
-            "reviewers": [
-                "1324"
-            ]
+            "address": "Allstar 3",
+            "feedback": "feedback",
+            "hash": "IPFS Hash"
         }
     },
     "classTemplate": {
