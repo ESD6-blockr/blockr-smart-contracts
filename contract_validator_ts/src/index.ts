@@ -1,66 +1,51 @@
+import "reflect-metadata";
+import {IPeer, Message, Peer, PeerType} from "@blockr/blockr-p2p-lib";
+import {RESPONSE_TYPE} from "@blockr/blockr-p2p-lib/dist/interfaces/peer";
 import {Executor} from "./executor";
-import {createPeer} from "./peer";
-import * as request from "request-promise-native";
+import {pairs} from "./contractString";
+import {requestValidator} from "./api-calls";
 
-let data = {
-    "constructor": {
-        "hash": "IPFS Hash",
-        "owner": "Creator Address",
-        "reviewers": [
-            "Ocean Man 1",
-            "Careless Whisper 2",
-            "Allstar 3"
-        ],
-        "feedback": []
-    },
-    "function": {
-        "functionName": "postFeedback",
-        "functionParameters": {
-            "address": "Allstar 3",
-            "feedback": "feedback",
-            "hash": "IPFS Hash"
+let peer: IPeer;
+
+async function startPeer() {
+    peer = new Peer(PeerType.SMART_CONTRACT_ENGINE);
+
+    await peer.init(["145.93.164.143"], "8082");
+    await peer.registerReceiveHandlerForMessageType("wallet_getFunctions", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
+        if (message && senderGuid) {
+            let contract = pairs[message.body];
+            message.body = Executor.getContractFunctions(contract);
+            response(message);
         }
-    },
-    //"function": {
-    //    "functionName": "initConstructor",
-    //    "functionParameters": {
-    //        "hash": "IPFS Hash",
-    //        "owner": "Creator Address",
-    //        "reviewers": [
-    //            "Ocean Man 1",
-    //            "Careless Whisper 2",
-    //            "Allstar 3"
-    //        ]
-    //    }
-    //},
-    "classTemplate": {
-        "contract": "class ReviewIPFSContract {\r\n    constructor(hash, owner, reviewers, feedback) {\r\n        this.ipfsHash = hash;\r\n        this.owner = owner;\r\n        this.reviewers = reviewers;\r\n        this.feedback = feedback;\r\n    }\r\n    initConstructor(hash, owner, reviewers) {\r\n        this.ipfsHash = hash;\r\n        this.owner = owner;\r\n        this.reviewers = reviewers;\r\n        this.feedback = [];\r\n    }\r\n    postFeedback(address, feedback, hash) {\r\n        if (this.ipfsHash != hash)\r\n            return \"This contract covers a different IPFS file\";\r\n        if (!this.reviewers.includes(address))\r\n            return \"You're not authorized to review this file\";\r\n        this.feedback.push(feedback);\r\n        return \"Posting feedback succeeded\";\r\n    }\r\n    getFeedback(address) {\r\n        if (this.owner != address)\r\n            return \"Only the owner can fetch feedback\";\r\n        return this.feedback;\r\n    }\r\n}"
-    }
-};
-//console.log(Executor.executeContract(data));
-//console.log(Executor.getContractFunctions(data));
+    });
 
-//console.log(createPeer());
-
-export class Index{
-    constructor(){
-        this.getContract();
-    }
-    async getContract(){
-        try {
-            const baseUrl = 'http://145.93.165.33:3000';
-            const queryString = '/ptsmock/transaction';
-            var options = {
-                uri: baseUrl + queryString,
-            };
-
-            const result = await request.get(options);
-            console.log(result);
-        } catch (e) {
-            console.log(e)
+    await peer.registerReceiveHandlerForMessageType("wallet_executeFunction", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
+        if (message && senderGuid) {
+            let contract = message.body;
+            message.body = Executor.executeContract(contract);
+            response(message);
         }
+    });
 
-    }
+    await peer.registerReceiveHandlerForMessageType("ipfs_getAllHashes", async (message: Message, senderGuid: string, response: RESPONSE_TYPE) => {
+        if (message && senderGuid) {
+            //todo get contracts from validator
+            let contracts: any[] = [];
+            let hashes: string[] = [];
+            for (let contract in contracts) {
+                let contractObj: object = Executor.rebuildContract(contract, false);
+                hashes.push(Executor.getHash(contractObj));
+            }
+            let returnMessage = new Message("engine_hashes",)
+        }
+        response(message);
+    });
 }
 
-new Index();
+console.log(requestValidator());
+
+// startPeer().then(() => {
+//     console.log("engine ready");
+// });
+
+
