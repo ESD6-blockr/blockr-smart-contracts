@@ -25,6 +25,7 @@ describe('executeContract',function () {
 
     it('should be null', function(){
         let ctr = Executor.executeContract(nonValidData);
+
         expect(ctr).toBeNull();
     })
 

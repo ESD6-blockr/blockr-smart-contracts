@@ -12,7 +12,7 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**/*.ts",
-        "!src/index.ts",
+        "!src/contractString.ts",
         "!src/__tests__/**/*"
     ],
     reporters: [

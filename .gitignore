@@ -182,3 +182,5 @@ fabric.properties
 \.idea/inspectionProfiles/Project_Default\.xml
 
 \.idea/blockr-smart-contracts\.iml
+
+contract_validator_ts/junit\.xml
